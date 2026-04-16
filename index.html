@@ -1305,14 +1305,19 @@
                 // 生成唯一ID用于去重
                 const recordId = 'qt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
                 
+                // 获取水源类型
+                const pipeSizeInput = document.querySelector('input[name="pipeSize"]:checked')?.value || '25';
+                const waterSource = pipeSizeInput === 'river_well' ? '河水/井水' : 
+                                   (pipeSizeInput === '32' ? '自来水32mm' : '自来水25mm');
+                
                 const record = {
                     id: recordId,
                     time: new Date().toISOString(),
                     areaCount: quotation.areas.length,
                     totalArea: quotation.areas.reduce((sum, area) => sum + (area.length * area.width), 0),
                     totalCost: quotation.totalCost,
-                    waterSource: document.getElementById('waterSource').value,
-                    locationType: document.querySelector('input[name="locationType"]:checked')?.value || 'unknown'
+                    waterSource: waterSource,
+                    pipeSize: pipeSizeInput
                 };
                 
                 // 使用 localStorage 存储（方案1：本地存储）
